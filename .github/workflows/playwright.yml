@@ -4,7 +4,7 @@ on:
   schedule:
     # Daily at 03:15 UTC = 9:00 AM Nepal time
     # - cron: '15 3 * * *'
-      - cron: '7,22,37,52 * * * *'
+    - cron: '7,22,37,52 * * * *'
 
   # Allows you to start a run from GitHub manually.
   workflow_dispatch:
