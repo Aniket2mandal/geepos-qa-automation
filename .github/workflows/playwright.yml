@@ -6,7 +6,7 @@ on:
     # - cron: '15 3 * * *'
     - cron: '7,22,37,52 * * * *'
 
-  # Allows you to start a run from GitHub manually.
+  # Allows you to start a run from GitHub manually. or by corn job too 
   workflow_dispatch:
 
 permissions:
