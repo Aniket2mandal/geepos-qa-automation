@@ -20,6 +20,12 @@ export default defineConfig({
   reporter: 'html',
 
   use: {
+    // Make the browser behave like it does on your PC.
+    // GitHub runners use UTC, which can change what the site shows
+    // (store hours, "Today"/"Tomorrow", available time slots).
+    timezoneId: 'Asia/Kathmandu',
+    locale: 'en-US',
+
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
