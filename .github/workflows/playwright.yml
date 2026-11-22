@@ -46,7 +46,7 @@ jobs:
           retention-days: 14
 
       - name: Email team on failure
-        if: failure()
+        if: always()
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtp.gmail.com
@@ -57,6 +57,8 @@ jobs:
           subject: "FAILED: Daily Playwright Tests (${{ github.repository }})"
           to: ${{ secrets.MAIL_TO }}
           from: Playwright Alerts <${{ secrets.MAIL_USERNAME }}>
+          nodemailerlog: true
+          nodemailerdebug: true
           body: |
             The daily Playwright tests failed.
 
