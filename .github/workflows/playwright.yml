@@ -1,12 +1,7 @@
 name: Daily Playwright Tests
 
 on:
-  # schedule:
-    # Daily at 03:15 UTC = 9:00 AM Nepal time
-    # - cron: '15 3 * * *'
-    # - cron: '7,22,37,52 *  * * *'
-
-  # Allows you to start a run from GitHub manually. or by corn job too 
+  # Triggered by cron-job.org (daily 9:00 AM Nepal time) or the "Run workflow" button
   workflow_dispatch:
 
 permissions:
@@ -35,6 +30,10 @@ jobs:
 
       - name: Run Playwright tests
         run: npx playwright test --project=chromium
+        env:
+          TEST_PHONE: ${{ secrets.TEST_PHONE }}
+          TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
+          TEST_EMAIL: ${{ secrets.TEST_EMAIL }}
 
       - name: Save test reports and failure evidence
         if: ${{ !cancelled() }}
@@ -45,3 +44,21 @@ jobs:
             playwright-report/
             test-results/
           retention-days: 14
+
+      - name: Email team on failure
+        if: failure()
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          secure: true
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          subject: "FAILED: Daily Playwright Tests (${{ github.repository }})"
+          to: ${{ secrets.MAIL_TO }}
+          from: Playwright Alerts <${{ secrets.MAIL_USERNAME }}>
+          body: |
+            The daily Playwright tests failed.
+
+            Run details and report:
+            ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
