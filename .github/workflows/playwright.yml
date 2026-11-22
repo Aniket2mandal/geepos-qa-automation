@@ -45,8 +45,17 @@ jobs:
             test-results/
           retention-days: 14
 
+      - name: Check secret lengths
+        if: failure()
+        run: |
+          echo "Username length: ${#MAIL_USERNAME}"
+          echo "Password length: ${#MAIL_PASSWORD}"
+        env:
+          MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
+          MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
+
       - name: Email team on failure
-        if: always()
+        if: failure()
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtp.gmail.com
