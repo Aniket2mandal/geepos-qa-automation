@@ -3,7 +3,7 @@ import { stores } from './stores.js';
 
 for (const store of stores) {
   test(`forgot password page: ${store.name}`, async ({ page }) => {
-    // const url = new URL('/forget?redirect=%2Fcheckout', store.url).href;
+    const url = new URL('/forget?redirect=%2Fcheckout', store.url).href;
     await page.goto(url);
 
     // Phone field is there and accepts input
